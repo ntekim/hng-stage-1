@@ -20,13 +20,13 @@ type Response struct{
 }
 
 func GetJSONData(w http.ResponseWriter, r *http.Request) {
-
 	username := r.URL.Query().Get("slack_name")
 	track	 := r.URL.Query().Get("track")
 	
 	if len(username) == 0 || len(track) == 0 {
 		w.WriteHeader(http.StatusBadRequest)
-		// w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Content-Type", "x-www-form-urlencoded")
 
 		var respData Response
 		respData.Error = true
@@ -66,7 +66,8 @@ func GetJSONData(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(http.StatusOK)
-	// w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Content-Type", "x-www-form-urlencoded")
 	_, err = w.Write(resp)
 	if err != nil {
 		panic(err)
