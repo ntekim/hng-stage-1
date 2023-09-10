@@ -14,6 +14,16 @@ import (
 
 var port = "81"
 
+type ResponseData struct{
+	Slack_name  		string `json:"slack_name"`
+	Track 				string `json:"track"`
+	Current_day 		string `json:"current_day"`
+	Utc_time 			string `json:"utc_time"`
+	Github_file_url 	string `json:"github_file_url"`
+	Github_repo_url 	string `json:"github_repo_url"`
+	Status_code 		uint   `json:"status_code`
+}
+
 type Response struct{
 	Error 	bool
 	Message string
@@ -25,8 +35,7 @@ func GetJSONData(w http.ResponseWriter, r *http.Request) {
 	
 	if len(username) == 0 || len(track) == 0 {
 		w.WriteHeader(http.StatusBadRequest)
-		// w.Header().Set("Content-Type", "application/json")
-		w.Header().Set("Content-Type", "x-www-form-urlencoded")
+		w.Header().Set("Content-Type", "application/json")
 
 		var respData Response
 		respData.Error = true
@@ -51,30 +60,30 @@ func GetJSONData(w http.ResponseWriter, r *http.Request) {
 	timeSplit := strings.Split(utcArr[1], ".")
 	formattedTime := utcArr[0] + "T" + timeSplit[0] + "Z"
 
-	var response = make(map[string]string)
-	response["slack_name"] = username
-	response["track"] = track
-	response["current_day"] = time.Now().Weekday().String()
-	response["utc_time"] = formattedTime
-	response["github_file_url"] = "https://github.com/ntekim/hng-stage-1/blob/main/main.go"
-	response["github_repo_url"] = "https://github.com/ntekim/hng-stage-1"
-	response["status_code"]   = fmt.Sprintf("%v", http.StatusOK)
+	var response = ResponseData {
+		Slack_name: username,
+		Track: track,
+		Current_day: time.Now().Weekday().String(),
+		Utc_time: formattedTime,
+		Github_file_url: "https://github.com/ntekim/hng-stage-1/blob/main/main.go",
+		Github_repo_url: "https://github.com/ntekim/hng-stage-1",
+		Status_code:   http.StatusOK,
+	}
+	
+	
 
-	resp, err := json.Marshal(response)
+	resp, err := json.MarshalIndent(response, "", " ")
 	if err != nil {
 		panic(err)
 	}
 
 	w.WriteHeader(http.StatusOK)
-	// w.Header().Set("Content-Type", "application/json")
-	w.Header().Set("Content-Type", "x-www-form-urlencoded")
+	w.Header().Set("Content-Type", "application/json")
 	_, err = w.Write(resp)
 	if err != nil {
 		panic(err)
 	}
 
-
-	fmt.Print(w.Header().Get("Content-Type"))
 }
 
 
