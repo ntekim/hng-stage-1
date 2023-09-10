@@ -21,7 +21,7 @@ type ResponseData struct{
 	Utc_time 			string `json:"utc_time"`
 	Github_file_url 	string `json:"github_file_url"`
 	Github_repo_url 	string `json:"github_repo_url"`
-	Status_code 		uint   `json:"status_code`
+	Status_code 		uint   `json:"status_code"`
 }
 
 type Response struct{
