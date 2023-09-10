@@ -27,7 +27,6 @@ type responseData struct{
 type Response struct{
 	Error 	bool
 	Message string
-	Data	any
 }
 
 func GetJSONData(w http.ResponseWriter, r *http.Request) {
@@ -41,7 +40,6 @@ func GetJSONData(w http.ResponseWriter, r *http.Request) {
 		var respData Response
 		respData.Error = true
 		respData.Message = "Slack_name and track cannot be empty"
-		respData.Data = responseData{}
 
 		resp, err := json.Marshal(respData)
 		if err != nil {
@@ -71,13 +69,7 @@ func GetJSONData(w http.ResponseWriter, r *http.Request) {
 	response.Github_repo_url = "https://github.com/ntekim/hng-stage-1"
 	response.Status_code   = http.StatusOK
 
-	var respData = Response{
-		Error: false,
-		Message: "Success",
-		Data: response,
-	}
-
-	resp, err := json.Marshal(respData)
+	resp, err := json.Marshal(response)
 	if err != nil {
 		panic(err)
 	}
