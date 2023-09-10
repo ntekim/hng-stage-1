@@ -14,16 +14,6 @@ import (
 
 var port = "81"
 
-type responseData struct{
-	Slack_name  		string
-	Track 				string
-	Current_day 		string
-	Utc_time 			string
-	Github_file_url 	string
-	Github_repo_url 	string
-	Status_code 		uint
-}
-
 type Response struct{
 	Error 	bool
 	Message string
@@ -52,7 +42,7 @@ func GetJSONData(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var response responseData
+	// var response responseData
 
 	utc_time := time.Now().UTC().String()
 
@@ -60,14 +50,14 @@ func GetJSONData(w http.ResponseWriter, r *http.Request) {
 	timeSplit := strings.Split(utcArr[1], ".")
 	formattedTime := utcArr[0] + "T" + timeSplit[0] + "Z"
 
-
-	response.Slack_name = username
-	response.Track = track
-	response.Current_day = time.Now().Weekday().String()
-	response.Utc_time = formattedTime
-	response.Github_file_url = "https://github.com/ntekim/hng-stage-1/blob/main/main.go"
-	response.Github_repo_url = "https://github.com/ntekim/hng-stage-1"
-	response.Status_code   = http.StatusOK
+	var response = make(map[string]string)
+	response["slack_name"] = username
+	response["track"] = track
+	response["current_day"] = time.Now().Weekday().String()
+	response["utc_time"] = formattedTime
+	response["github_file_url"] = "https://github.com/ntekim/hng-stage-1/blob/main/main.go"
+	response["github_repo_url"] = "https://github.com/ntekim/hng-stage-1"
+	response["status_code"]   = fmt.Sprintf("%v", http.StatusOK)
 
 	resp, err := json.Marshal(response)
 	if err != nil {
