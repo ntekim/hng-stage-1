@@ -25,7 +25,7 @@ func GetJSONData(w http.ResponseWriter, r *http.Request) {
 	
 	if len(username) == 0 || len(track) == 0 {
 		w.WriteHeader(http.StatusBadRequest)
-		w.Header().Set("Content-Type", "application/json")
+		// w.Header().Set("Content-Type", "application/json")
 		w.Header().Set("Content-Type", "x-www-form-urlencoded")
 
 		var respData Response
@@ -66,13 +66,15 @@ func GetJSONData(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(http.StatusOK)
-	w.Header().Set("Content-Type", "application/json")
+	// w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Content-Type", "x-www-form-urlencoded")
 	_, err = w.Write(resp)
 	if err != nil {
 		panic(err)
 	}
 
+
+	fmt.Print(w.Header().Get("Content-Type"))
 }
 
 
