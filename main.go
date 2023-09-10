@@ -34,9 +34,8 @@ func GetJSONData(w http.ResponseWriter, r *http.Request) {
 	track	 := r.URL.Query().Get("track")
 	
 	if len(username) == 0 || len(track) == 0 {
-		w.WriteHeader(http.StatusBadRequest)
 		w.Header().Set("Content-Type", "application/json")
-
+		w.WriteHeader(http.StatusBadRequest)
 		var respData Response
 		respData.Error = true
 		respData.Message = "Slack_name or track cannot be empty"
@@ -55,7 +54,7 @@ func GetJSONData(w http.ResponseWriter, r *http.Request) {
 
 	// var response responseData
 
-	utc_time := time.Now().Local().UTC()
+	utc_time := time.Now().UTC()
 
 	fmt.Println(utc_time)
 
@@ -80,14 +79,12 @@ func GetJSONData(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	w.WriteHeader(http.StatusOK)
 	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
 	_, err = w.Write(resp)
 	if err != nil {
 		panic(err)
 	}
-
-	fmt.Println(w.Header().Get("Content-Type"))
 }
 
 
