@@ -45,6 +45,7 @@ func GetJSONData(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			panic(err)
 		}
+
 		_, err = w.Write(resp)
 		if err != nil {
 			panic(err)
@@ -54,11 +55,11 @@ func GetJSONData(w http.ResponseWriter, r *http.Request) {
 
 	// var response responseData
 
-	utc_time := time.Now().UTC().String()
+	// utc_time := time.Now()
 
-	utcArr := strings.Split(utc_time, " ")
-	timeSplit := strings.Split(utcArr[1], ".")
-	formattedTime := utcArr[0] + "T" + timeSplit[0] + "Z"
+	utcArr := strings.Split(time.Now().String(), ".")
+	timeSplit := strings.Split(utcArr[0], " ")
+	formattedTime := timeSplit[0] + "T" + timeSplit[1] + "Z"
 
 	var response = ResponseData {
 		Slack_name: username,
@@ -72,7 +73,7 @@ func GetJSONData(w http.ResponseWriter, r *http.Request) {
 	
 	
 
-	resp, err := json.MarshalIndent(response, "", " ")
+	resp, err := json.Marshal(response)
 	if err != nil {
 		panic(err)
 	}
