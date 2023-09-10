@@ -39,7 +39,7 @@ func GetJSONData(w http.ResponseWriter, r *http.Request) {
 
 		var respData Response
 		respData.Error = true
-		respData.Message = "Slack_name and track cannot be empty"
+		respData.Message = "Slack_name or track cannot be empty"
 
 		resp, err := json.Marshal(respData)
 		if err != nil {
@@ -96,7 +96,7 @@ func route() http.Handler{
 	}))
 
 	mux.Use(middleware.Logger)
-	mux.Get("/", GetJSONData)
+	mux.Get("/api", GetJSONData)
 
 	return mux
 }
