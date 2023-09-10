@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	// "strings"
+	"strings"
 	"time"
 
 	"github.com/go-chi/chi"
@@ -55,21 +55,20 @@ func GetJSONData(w http.ResponseWriter, r *http.Request) {
 
 	// var response responseData
 
-	utc_time := time.Now().UTC().Local()
+	utc_time := time.Now().Local().UTC()
 
 	fmt.Println(utc_time)
 
-	// utcArr := strings.Split(utc_time.String(), ".")
-	// timeSplit := strings.Split(utcArr[0], " ")
-	// formattedTime := utcArr[0] + "Z"
-	// fmt.Println(forma)
+	utcArr := strings.Split(utc_time.String(), ".")
+	timeSplit := strings.Split(utcArr[0], " ")
+	formattedTime := timeSplit[0] + "T" + timeSplit[1] + "Z"
 
 	var response = ResponseData {
 		Slack_name: username,
 		Track: track,
 		Current_day: time.Now().Weekday().String(),
-		Utc_time: fmt.Sprintf("%d-%d-%dT%d:%d:%dZ", utc_time.Year(), utc_time.Month(), utc_time.Day(), utc_time.Hour(), utc_time.Minute(), utc_time.Second()),
-		Github_file_url: "https://github.com/ntekim/hng-stage-1/blob/main/main.go",
+		Utc_time: formattedTime,
+		Github_file_url: "https://github.com/ntekim/hng-stage-1/blob/main/README.md",
 		Github_repo_url: "https://github.com/ntekim/hng-stage-1",
 		Status_code:   http.StatusOK,
 	}
